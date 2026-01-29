@@ -4,7 +4,7 @@
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <environments>Default</environments>
     <interviewLabel>Lead-Before-Status Upadte {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Lead-Before-Status Upadte1</label>
+    <label>Lead-Before-Status Upadte2</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -29,6 +29,12 @@
         <label>UpdateLeadStatus</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <inputAssignments>
+            <field>Industry</field>
+            <value>
+                <stringValue>Apparel</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>LeadSource</field>
             <value>
