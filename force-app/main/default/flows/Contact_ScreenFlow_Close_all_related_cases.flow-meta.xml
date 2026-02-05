@@ -10,7 +10,7 @@
     </customProperties>
     <environments>Default</environments>
     <interviewLabel>Contact - {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Contact -ScreenFlow - Close all related cases2</label>
+    <label>Contact -ScreenFlow - Close all related cases3</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -54,6 +54,31 @@
         <object>Account</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>GR_01_getAccountRelatedCases</name>
+        <label>GR 01: getAccountRelatedCases</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>relatedCases</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreenGetRecord01</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>AccountId.recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UR_01_UpdateAllOpenCases</name>
         <label>UR 01 :- UpdateAllOpenCases</label>
@@ -94,7 +119,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>UR_01_UpdateAllOpenCases</targetReference>
+            <targetReference>GR_01_getAccountRelatedCases</targetReference>
         </connector>
         <fields>
             <name>DisplayAccInformation</name>
@@ -109,7 +134,7 @@
                 </width>
             </styleProperties>
         </fields>
-        <nextOrFinishButtonLabel>Close Open Cases</nextOrFinishButtonLabel>
+        <nextOrFinishButtonLabel>Show Related Cases</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -135,6 +160,97 @@
             </styleProperties>
         </fields>
         <nextOrFinishButtonLabel>Done</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>relatedCases</name>
+        <label>relatedCases</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>UR_01_UpdateAllOpenCases</targetReference>
+        </connector>
+        <fields>
+            <name>displayelatedCases</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Case</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Realted Cases</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>MULTI_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>GR_01_getAccountRelatedCases</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>keyField</name>
+                <value>
+                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;Case&quot;,&quot;fieldReferences&quot;:[&quot;Id&quot;],&quot;elementReference&quot;:&quot;GR_01_getAccountRelatedCases&quot;}</complexValue>
+                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;CaseNumber&quot;,&quot;guid&quot;:&quot;column-aa8f&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Case Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Status&quot;,&quot;guid&quot;:&quot;column-5472&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;IsClosed&quot;,&quot;guid&quot;:&quot;column-3cc6&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Closed&quot;,&quot;type&quot;:&quot;boolean&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnReferences</name>
+                <value>
+                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;Case&quot;,&quot;fieldReferences&quot;:[&quot;CaseNumber&quot;,&quot;Status&quot;,&quot;IsClosed&quot;],&quot;elementReference&quot;:&quot;GR_01_getAccountRelatedCases&quot;}</complexValue>
+                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isShowSearchBar</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Close All Open Caes</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
