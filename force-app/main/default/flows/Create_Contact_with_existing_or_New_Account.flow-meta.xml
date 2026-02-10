@@ -40,7 +40,7 @@
         <expression>LEFT({!$Api.Partner_Server_URL_650}, Find (&apos;/ Services&apos;,  {!$Api.Partner_Server_URL_650}))</expression>
     </formulas>
     <interviewLabel>Create Contact - with existing or New Account {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Create Contact - with existing or New Account1</label>
+    <label>Create Contact - with existing or New Account2</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -979,7 +979,7 @@
             <targetReference>AccountSearchScreen</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>varAccountRecord</name>
         <dataType>SObject</dataType>
