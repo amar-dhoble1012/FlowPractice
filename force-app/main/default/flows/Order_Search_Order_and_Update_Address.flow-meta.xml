@@ -96,7 +96,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GR01_Get_Order_Record.OriginalOrderId</elementReference>
+                <elementReference>GR01_Get_Order_Record.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -611,5 +611,5 @@
             <targetReference>OrderNoScreen</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
