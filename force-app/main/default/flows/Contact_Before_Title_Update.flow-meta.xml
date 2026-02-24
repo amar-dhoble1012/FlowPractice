@@ -2,9 +2,75 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customErrors>
+        <name>CE00_Account_Is_required</name>
+        <label>CE00 :Account Is required</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Account is required when  lead source is &apos;phone enquiry&apos; &amp; Level is &apos;primary&apos;</errorMessage>
+            <fieldSelection>AccountId</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+        <customErrorMessages>
+            <errorMessage>Account is required when  lead source is &apos;phone enquiry&apos; &amp; Level is &apos;primary&apos;</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>DC01_Is_Account_id_is_null</name>
+        <label>DC01 :- Is Account id is null</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_account_is_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DC02_check_lead_source_is_phone_Level_is_primary</targetReference>
+            </connector>
+            <label>Is account is Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DC02_check_lead_source_is_phone_Level_is_primary</name>
+        <label>DC02: check lead source is &apos;phone&apos; &amp; Level is &apos;primary&apos;</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>NO Error</defaultConnectorLabel>
+        <rules>
+            <name>Enquiry_is_phone_Level_is_primary</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Level__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Primary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LeadSource</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Phone Inquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CE00_Account_Is_required</targetReference>
+            </connector>
+            <label>Enquiry is &apos;phone&apos; &amp; Level is &apos;primary&apos;</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Contact-Before-TitleUpdate {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Contact-Before-Title Update</label>
+    <label>Contact-Before-Title Update/Account is required</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -29,6 +95,9 @@
         <label>UpdateContactTitle</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>DC01_Is_Account_id_is_null</targetReference>
+        </connector>
         <inputAssignments>
             <field>Title</field>
             <value>

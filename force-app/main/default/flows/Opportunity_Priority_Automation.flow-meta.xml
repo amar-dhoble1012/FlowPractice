@@ -25,12 +25,12 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
-        <name>send_email_alert</name>
-        <label>send email alert</label>
+        <name>EA01_Hi_volume_Opportunity_Email_alert_to_Account_Owner</name>
+        <label>EA01 : Hi volume Opportunity Email alert to Account Owner</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>emailSimple</actionName>
-        <actionType>emailSimple</actionType>
+        <actionName>Opportunity.Hi_volume_Opportunity_Email_alert_to_Account_Owner</actionName>
+        <actionType>emailAlert</actionType>
         <connector>
             <targetReference>High_Value_Opportunity</targetReference>
         </connector>
@@ -39,57 +39,13 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>recipientAddresses</name>
+            <name>SObjectRowId</name>
             <value>
-                <collectionElements>
-                    <elementReference>$Record.Account.Owner.Email</elementReference>
-                </collectionElements>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
-        <inputParameters>
-            <name>ccAddresses</name>
-            <value>
-                <collectionElements>
-                    <elementReference>$Record.Owner.Email</elementReference>
-                </collectionElements>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>bccAddresses</name>
-            <value>
-                <collectionElements>
-                    <stringValue>amardhoble.sfdc@gmail.com</stringValue>
-                </collectionElements>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>composeEmailContent</name>
-            <value>
-                <stringValue>True</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>emailSubject</name>
-            <value>
-                <elementReference>fmEmailSubject</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>emailBody</name>
-            <value>
-                <inputConfiguratorMode>Custom</inputConfiguratorMode>
-                <stringValue>&lt;p&gt;Dear {&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;!$Record.Owner.FirstName}&lt;/span&gt;,&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;A &lt;strong&gt;high valume&lt;/strong&gt; opportunity has been created for you. &lt;strong&gt;{!$Record.Account.Name}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please find below trhe key detailes.&lt;/p&gt;&lt;p&gt;   &lt;strong&gt;Name :- &lt;/strong&gt;&lt;em&gt;{!$Record.Name}&lt;/em&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;   Amount :- &lt;/strong&gt;{&lt;em&gt;!$Record.Amount}&lt;/em&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;   Close Date :-&lt;/strong&gt;&lt;em&gt;{!$Record.CloseDate}&lt;/em&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;   Decription :-&lt;/strong&gt;&lt;em&gt;{!$Record.Description}&lt;/em&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;   Stage :-&lt;/strong&gt;&lt;em&gt; {!$Record.StageName}&lt;/em&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Thanx and regards.&lt;/p&gt;&lt;p&gt;{!$Organization.Name}&lt;/p&gt;&lt;p&gt;{!$Organization.Phone}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>sendRichBody</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <nameSegment>emailSimple</nameSegment>
+        <nameSegment>Opportunity.Hi_volume_Opportunity_Email_alert_to_Account_Owner</nameSegment>
         <offset>0</offset>
-        <versionString>2.0.1</versionString>
     </actionCalls>
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
@@ -193,7 +149,7 @@
 +&quot;Amount :-&quot; + TEXT({!$Record.Amount})</expression>
     </formulas>
     <interviewLabel>Opportunity_Priority_Automation {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Opportunity_Priority_Automation3</label>
+    <label>Opportunity_Priority_Automation4</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -217,7 +173,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>send_email_alert</targetReference>
+            <targetReference>EA01_Hi_volume_Opportunity_Email_alert_to_Account_Owner</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
@@ -232,5 +188,5 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
