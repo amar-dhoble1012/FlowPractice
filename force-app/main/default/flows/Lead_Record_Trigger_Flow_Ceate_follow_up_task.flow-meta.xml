@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customErrors>
+        <name>CE01_CustomerError</name>
+        <label>CE01 : CustomerError</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Please resolve the below error and try again.
+{!$Flow.FaultMessage}</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <environments>Default</environments>
+    <formulas>
+        <name>varDueDate</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() + 3</expression>
+    </formulas>
+    <interviewLabel>Lead : Record Trigger Flow : Ceate  follow up task {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lead : Record Trigger Flow : Ceate  follow up task</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CR01_Create_Task_Record</name>
+        <label>CR01 : Create Task Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <faultConnector>
+            <targetReference>CE01_CustomerError</targetReference>
+        </faultConnector>
+        <inputReference>TR02_Prepare_the_task_reocrd</inputReference>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>TR02_Prepare_the_task_reocrd</targetReference>
+        </connector>
+        <object>Lead</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <transforms>
+        <name>TR02_Prepare_the_task_reocrd</name>
+        <label>TR02 :- Prepare the task reocrd</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>CR01_Create_Task_Record</targetReference>
+        </connector>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <objectType>Task</objectType>
+        <scale>0</scale>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <transformValues>
+            <transformValueActions>
+                <outputFieldApiName>Description</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.Description</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>OwnerId</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.OwnerId</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Priority</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <formulaDataType>String</formulaDataType>
+                    <formulaExpression>&quot;Normal&quot;</formulaExpression>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Status</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <formulaDataType>String</formulaDataType>
+                    <formulaExpression>&quot;Not Started&quot;</formulaExpression>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Subject</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <formulaDataType>String</formulaDataType>
+                    <formulaExpression>{!$Record.FirstName} + &quot; &quot;+ {!$Record.LastName}</formulaExpression>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>ActivityDate</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>varDueDate</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>WhoId</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.Id</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+</Flow>
