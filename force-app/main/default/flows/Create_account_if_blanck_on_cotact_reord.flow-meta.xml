@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customErrors>
+        <name>CE00_Account_Is_required</name>
+        <label>CE00 :Account Is required</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Account is required when  lead source is &apos;phone enquiry&apos; &amp; Level is &apos;primary&apos;</errorMessage>
+            <fieldSelection>AccountId</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+        <customErrorMessages>
+            <errorMessage>Account is required when  lead source is &apos;phone enquiry&apos; &amp; Level is &apos;primary&apos;</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>CE02_Error_in_account_creation</name>
+        <label>CE02 :- Error in account creation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>{!$Flow.FaultMessage}</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>DC02_check_lead_source_is_phone_Level_is_primary</name>
+        <label>DC02: check lead source is &apos;phone&apos; &amp; Level is &apos;primary&apos;</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>TS01_Prepare_account_record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO Error</defaultConnectorLabel>
+        <rules>
+            <name>Enquiry_is_phone_Level_is_primary</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Level__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Primary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LeadSource</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Phone Inquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CE00_Account_Is_required</targetReference>
+            </connector>
+            <label>Enquiry is &apos;phone&apos; &amp; Level is &apos;primary&apos;</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Create account if blanck on cotact reord {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Create account if blanck on cotact reord</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CR01_Create_account_record</name>
+        <label>CR01 : Create account record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>UR01_Updat_ethe_contact</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>CE02_Error_in_account_creation</targetReference>
+        </faultConnector>
+        <inputReference>TS01_Prepare_account_record</inputReference>
+    </recordCreates>
+    <recordUpdates>
+        <name>UR01_Updat_ethe_contact</name>
+        <label>UR01 :- Update the contact</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>TS01_Prepare_account_record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>DC02_check_lead_source_is_phone_Level_is_primary</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <transforms>
+        <name>TS01_Prepare_account_record</name>
+        <label>TS01 : Prepare account record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>CR01_Create_account_record</targetReference>
+        </connector>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <objectType>Account</objectType>
+        <scale>0</scale>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <transformValues>
+            <transformValueActions>
+                <outputFieldApiName>Name</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <formulaDataType>String</formulaDataType>
+                    <formulaExpression>{!$Record.FirstName} +&quot; &quot;+{!$Record.LastName}</formulaExpression>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>CleanStatus</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.CleanStatus</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Industry</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.Industry__c</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+    <variables>
+        <name>conatctTitle</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>New Contact added </stringValue>
+        </value>
+    </variables>
+</Flow>
