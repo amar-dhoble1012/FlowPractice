@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Amount_When_Approved</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    Fields_Locked__c = TRUE,
+    ISCHANGED(Amount),
+    ISCHANGED(StageName)
+)</errorConditionFormula>
+    <errorDisplayField>Amount</errorDisplayField>
+    <errorMessage>This field is locked while the Opportunity is under approval.</errorMessage>
+</ValidationRule>

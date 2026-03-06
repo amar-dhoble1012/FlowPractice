@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Risk_Level__c</fullName>
+    <inlineHelpText>Risk level of an opportunity</inlineHelpText>
+    <label>Risk_Level</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Low Value – Routine Deal</fullName>
+                <default>true</default>
+                <label>Low Value – Routine Deal</label>
+            </value>
+            <value>
+                <fullName>Medium Value – Follow-Up Required</fullName>
+                <default>false</default>
+                <label>Medium Value – Follow-Up Required</label>
+            </value>
+            <value>
+                <fullName>High Value – Time Sensitive</fullName>
+                <default>false</default>
+                <label>High Value – Time Sensitive</label>
+            </value>
+            <value>
+                <fullName>High Value – Executive Attention</fullName>
+                <default>false</default>
+                <label>High Value – Executive Attention</label>
+            </value>
+            <value>
+                <fullName>Strategic Deal – High Risk</fullName>
+                <default>false</default>
+                <label>Strategic Deal – High Risk</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
